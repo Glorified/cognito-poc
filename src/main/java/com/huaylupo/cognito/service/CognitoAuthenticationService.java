@@ -286,24 +286,9 @@ public class CognitoAuthenticationService {
 							.withName("email")
 							.withValue(signUpRequest.getEmail()),
 							new AttributeType()
-							.withName("name")
-							.withValue(signUpRequest.getName()),
-							new AttributeType()
-							.withName("family_name")
-							.withValue(signUpRequest.getLastname()),
-							new AttributeType()
-							.withName("phone_number")
-							.withValue(signUpRequest.getPhoneNumber()),
-							new AttributeType()
-							.withName("custom:brokerID")
-							.withValue(signUpRequest.getBrokerID()),
-							new AttributeType()
-							.withName("custom:companyPosition")
-							.withValue(signUpRequest.getCompanyPosition()),
-							new AttributeType()
 							.withName("email_verified")
 							.withValue("true"))
-					.withTemporaryPassword("QuhxmE472.")
+					.withTemporaryPassword(signUpRequest.getPassword())
 					.withMessageAction("SUPPRESS")
 					.withDesiredDeliveryMediums(DeliveryMediumType.EMAIL)
 					.withForceAliasCreation(Boolean.FALSE);

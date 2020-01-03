@@ -28,6 +28,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.huaylupo.cognito.security.filter.AwsCognitoJwtAuthenticationFilter;
 import com.huaylupo.cognito.security.filter.RestAccessDeniedHandler;
@@ -44,7 +46,7 @@ import com.huaylupo.cognito.security.filter.SecurityAuthenticationEntryPoint;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableTransactionManagement
-public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     @Autowired
     private CustomAuthenticationProvider authProvider;
@@ -88,6 +90,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         // TokenAuthenticationFilter will ignore the below paths
     	web.ignoring().antMatchers("/auth");
+    	web.ignoring().antMatchers("/swagger-ui.html");
+    	web.ignoring().antMatchers("/swagger-resources/**");
+    	web.ignoring().antMatchers("/webjars/**");
+    	
         web.ignoring().antMatchers("/auth/**");
         web.ignoring().antMatchers("/v2/api-docs");
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
@@ -131,7 +137,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                     /* All access to the authentication service are permitted without authentication (actually as anonymous) */
-                .antMatchers("/auth").permitAll()
+                .antMatchers("/").permitAll()
                     /* All the other requests need an authentication.
                      Role access is done on Methods using annotations like @PreAuthorize
                      */
@@ -169,4 +175,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         
         return new com.huaylupo.cognito.security.filter.CorsFilter();
     }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+          .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        }
 }

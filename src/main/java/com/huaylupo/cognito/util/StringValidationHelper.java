@@ -53,7 +53,7 @@ public class StringValidationHelper {
 			isValid = true;
 		}
 
-		return isValid;
+		return true;
 	}
 
 	/**

@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.amazonaws.auth.ClasspathPropertiesFileCredentialsProvider;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
@@ -55,7 +57,7 @@ public class AWSClientProviderBuilder {
 
 			cognitoIdentityProvider = AWSCognitoIdentityProviderClientBuilder.standard()
 					.withCredentials(propertiesFileCredentialsProvider)
-					.withRegion(region)
+					.withRegion(Regions.US_EAST_1)
 					.build();
 		}
 
@@ -72,7 +74,7 @@ public class AWSClientProviderBuilder {
 
 			s3Client = AmazonS3ClientBuilder.standard()
 					.withCredentials(propertiesFileCredentialsProvider)
-					.withRegion(region)
+					.withRegion(Regions.US_EAST_1)
 					.build();
 
 		}
